@@ -6,6 +6,7 @@ on:
       - "**/Cargo.lock"
   schedule:
     - cron: "0 0 * * *"
+
 jobs:
   audit:
     runs-on: ubuntu-latest
