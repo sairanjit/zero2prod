@@ -15,11 +15,13 @@ pub struct DatabaseSettings {
 
 pub fn get_configuration() -> Result<Settings, config::ConfigError> {
     // Initialize config reader
-    let mut settings = config::Config::default();
-
-    settings.merge(config::File::with_name("configuration"))?;
-
-    settings.try_deserialize()
+    let settings = config::Config::builder()
+        .add_source(config::File::new(
+            "configuration.yaml",
+            config::FileFormat::Yaml,
+        ))
+        .build()?;
+    settings.try_deserialize::<Settings>()
 }
 
 impl DatabaseSettings {
