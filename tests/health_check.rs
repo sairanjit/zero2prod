@@ -1,8 +1,17 @@
 use std::net::TcpListener;
 
+use once_cell::sync::Lazy;
 use sqlx::{Connection, Executor, PgConnection, PgPool};
 use uuid::Uuid;
-use zero2prod::configuration::{get_configuration, DatabaseSettings};
+use zero2prod::{
+    configuration::{get_configuration, DatabaseSettings},
+    telemetry::{get_subscriber, init_subscriber},
+};
+
+static TRACING: Lazy<()> = Lazy::new(|| {
+    let subscriber = get_subscriber("test".into(), "debug".into());
+    init_subscriber(subscriber);
+});
 
 pub struct TestApp {
     pub address: String,
@@ -11,6 +20,10 @@ pub struct TestApp {
 
 // Launch application in the background
 async fn spawn_app() -> TestApp {
+    // The first time `initialize` is invoked the code in `TRACING` is executed.
+    // All other invocations will instead skip execution.
+    Lazy::force(&TRACING);
+
     let listener = TcpListener::bind("127.0.0.1:0").expect("Failed to find random port");
 
     // Get a random port from OS
