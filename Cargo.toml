@@ -16,7 +16,7 @@ name = "zero2prod"
 actix-web = "4"
 config = "0.13.2"
 serde = { version = "1", features = ["derive"]}
-sqlx = { version = "0.6", default-features = false, features = ["runtime-actix-rustls", "macros", "postgres", "uuid", "chrono", "migrate", "offline"] }
+sqlx = { version = "0.6.2", default-features = false, features = ["runtime-actix-rustls", "macros", "postgres", "uuid", "chrono", "migrate", "offline"] }
 uuid = { version = "1.1.2", features = ["v4"] }
 chrono = "0.4.15"
 tracing = { version = "0.1", features = ["log"] }
